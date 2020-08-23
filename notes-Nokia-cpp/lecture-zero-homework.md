@@ -378,4 +378,4 @@ auto x3 = {27};  // x3 is std::initializer_list<int>
 auto x4{27};     // x4 is std::initializer_list<int>
 ```
 
-[my playin' around snipet above](playdo/init_and_auto_keyword/auto.cpp)  
+[my playin' around snipet above](../playdo/init_and_auto_keyword/auto.cpp)  
