@@ -1,6 +1,6 @@
 # Lecture zero Nokia Academy C++
   
-## __[sld.02]__ Types in C++, Type classification
+## __[sld.03]__ Types in C++, Type classification
   
 ## Typy fundamentalne
   
@@ -357,10 +357,10 @@ class Derived : public Base {
 };
 ```
   
-\[...]
+\[...]  
 Aaaand so go on, to __nine__, but I don't know why... 
   
-## __[sld.03]__ Types in C++, Initialization and `auto` keyword  
+## __[sld.04]__ Types in C++, Initialization and `auto` keyword  
 
 ```cpp
 int number(2);
@@ -378,4 +378,45 @@ auto x3 = {27};  // x3 is std::initializer_list<int>
 auto x4{27};     // x4 is std::initializer_list<int>
 ```
 
-[my playin' around snipet above](../playdo/init_and_auto_keyword/auto.cpp)  
+[my playin' around snipet above](../playdo/04/auto.cpp)  
+  
+## __[sld.05]__ Types in C++, Pointers and references  
+
+```cpp
+int i = 3;     // our variable
+int *ptr = &i  // pointer with type int*
+int &ref = i;  // reference with type int&
+
+std::cout << ptr   // print address
+std::cout << *ptr  // print value
+
+int &ref2 = 7;        // cannot be initialized
+const int& ref3 = 10; // can be initialized
+```
+
+And snippet from https://stackoverflow.com/a/4629355/12474392  
+> There are a number of answers saying things along the lines of "references are just syntactic sugar for easier handling of pointers". They most certainly are not.  
+> Consider the following code:  
+
+```cpp
+int a = 3;
+int b = 4;
+int* pointerToA = &a;
+int* pointerToB = &b;
+int* p = pointerToA;
+p = pointerToB;
+printf("%d %d %d\n", a, b, *p); // Prints 3 4 4
+int& referenceToA = a;
+int& referenceToB = b;
+int& r = referenceToA;
+r = referenceToB;
+printf("%d %d %d\n", a, b, r); // Prints 4 4 4
+```
+
+The line `p = pointerToB` changes the value of `p`, i.e. it now points to a different piece of memory.  
+  
+`r = referenceToB` does something completely different: it assigns the value of `b` to where the value of `a` used to be. It does __not__ change `r` at all. `r` is still a reference to the same piece of memory.  
+  
+The difference is subtle but very important.  
+  
+[my playin' around snipets above](../playdo/05/pointers_and_refrs.cpp)  
