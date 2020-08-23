@@ -360,4 +360,22 @@ class Derived : public Base {
 \[...]
 Aaaand so go on, to __nine__, but I don't know why... 
   
-## __[sld.03]__ Types in C++, Type classification
+## __[sld.03]__ Types in C++, Initialization and `auto` keyword  
+
+```cpp
+int number(2);
+bool isMine = number;    // isMine == true
+
+float height = 2.45;
+int newHeight = height;  // newHeight == 2
+
+int x;    // ok, x == ?
+int x{};  // ok, x == 0
+
+auto x1 = 27;    // x1 is int
+auto x2(27);     // x2 is int
+auto x3 = {27};  // x3 is std::initializer_list<int>
+auto x4{27};     // x4 is std::initializer_list<int>
+```
+
+[my playin' around snipet above](playdo/init_and_auto_keyword/auto.cpp)  
