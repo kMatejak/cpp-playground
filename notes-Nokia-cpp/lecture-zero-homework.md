@@ -219,8 +219,12 @@ struct S { int n; };
 S s = {1};
 int* sp = &s.n;      // pointer to the int that is a member of s
 ```
-
-- [array](https://en.cppreference.com/w/cpp/language/array)
+  
+- [array](https://en.cppreference.com/w/cpp/language/array)  
+A declaration of the form T a[N];, declares a as an array object that consists of N contiguously allocated objects of type T. The elements of an array are numbered 0, …, N - 1, and may be accessed with the subscript operator [], as in a[0], …, a[N - 1].  
+  
+Arrays can be constructed from any fundamental type (except `void`), pointers, pointers to members, classes, enumerations, or from other arrays of known bound (in which case the array is said to be multi-dimensional). In other words, only object types except for array types of unknown bound can be element types of array types. Array types of incomplete element type are also incomplete types.  
+  
 - [enum](https://en.cppreference.com/w/cpp/language/enum)  
 - [klasa](https://en.cppreference.com/w/cpp/language/class)  
   
