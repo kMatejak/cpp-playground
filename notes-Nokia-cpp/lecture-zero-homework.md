@@ -233,7 +233,7 @@ An enumeration is a distinct type whose value is restricted to a range of values
   
 __There are two distinct kinds of enumerations: unscoped enumeration (declared with the enum-key enum) and scoped enumeration (declared with the enum-key enum class or enum struct).__  
   
-__Unscoped enumeration__  
+[__Unscoped enumeration__](https://en.cppreference.com/w/cpp/language/enum#Unscoped_enumeration)  
 Each _enumerator_ becomes a named constant of the enumeration's type (that is, _name_), visible in the enclosing scope, and can be used whenever constants are required.  
   
 ```cpp
@@ -291,6 +291,73 @@ switch(r) {
 int n = static_cast<int>(r);  // OK, n == 21
 ```
   
-- [klasa](https://en.cppreference.com/w/cpp/language/class)  
+### [Klasa](https://en.cppreference.com/w/cpp/language/class)  
+  
+[__Member specification__](https://en.cppreference.com/w/cpp/language/class#Member_specification)  
+
+1. Member declarations of the form  
+This declaration may declare static and non-static data members and member functions, member typedefs, member enumerations, and nested classes. It may also be a friend declaration.  
+
+```cpp
+class S {
+  int d1; // non-static data member
+  int a[10] = {1,2}; // non-static data member with initializer (C++11)
+  static const int d2 = 1;  // static data member with initializer
+  virtual void f1(int) = 0; // pure virtual member function
+  std::string d3, *d4, f2(int); // two data members and a member function
+  enum {NORTH, SOUTH, EAST, WEST};
+  struct NestedS {
+    std::string s;
+  } d5, *d6;
+  typedef NestefdS value_type, *pointer_type;
+};
+```
+
+2. Function definitions, which both declare and define member functions or friend functions. A semicolon after a member function definition is optional. All functions that are defined inside a class body are automaticaly inline.  
+
+```cpp
+class M {
+    std::size_t C;
+    std::vector<int> data;
+ public:
+    M(std::size_t R, std::size_t C) : C(C), data(R*C) {} // constructor definition 
+    int operator()(size_t r, size_t c) const { // member function definition
+        return data[r*C+c];
+    }
+    int& operator()(size_t r, size_t c) {  // another member function definition
+        return data[r*C+c];
+    }
+};
+```
+
+3. Access specifiers public:, protected:, and private:
+
+```cpp
+class S {
+ public:
+    S();          // public constructor
+    S(const S&);  // public copy constructor
+    virtual ~S(); // public virtual destructor
+ private:
+    int* ptr; // private data member
+};
+```
+
+4. [Using-declarations](https://en.cppreference.com/w/cpp/language/using_declaration)  
+
+```cpp
+class Base {
+ protected:
+     int d;
+};
+class Derived : public Base {
+ public:
+    using Base::d; // make Base's protected member d a public member of Derived
+    using Base::Base; // inherit all parent's constructors (C++11)
+};
+```
+  
+\[...]
+Aaaand so go on, to __nine__, but I don't know why... 
   
 ## __[sld.03]__ Types in C++, Type classification
