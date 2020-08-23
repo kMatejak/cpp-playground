@@ -96,7 +96,7 @@ int maxValue;          // Niezalecane! maxValue zawiera śmieciowe bity aż nie 
   
 <https://en.cppreference.com/w/cpp/language/type>  
   
-- [__referencja__](https://en.cppreference.com/w/cpp/language/reference)  
+### [__Referencja__](https://en.cppreference.com/w/cpp/language/reference)  
   
 ```cpp
 int& a[3];  // error
@@ -110,7 +110,7 @@ Lvalue references can be used to alias an existing object (optionally with diffe
 ```cpp
 #include <iostream>
 #include <string>
- 
+
 int main() {
     std::string s = "Ex";
     std::string& r1 = s;
@@ -172,9 +172,10 @@ std::cout << r;       // undefined behavior: reads from a dangling reference
 std::string s = f();  // undefined behavior: copy-initializes from a dangling reference
 ```
   
-- __wskaźnik__  
-  - [link 1 \(ang)](https://en.cppreference.com/w/cpp/language/pointer)  
-  - [link 2 \(pl)](https://pl.wikibooks.org/wiki/C/Wska%C5%BAniki)  
+### __Wskaźnik__  
+  
+- [link 1 \(ang)](https://en.cppreference.com/w/cpp/language/pointer)
+- [link 2 \(pl)](https://pl.wikibooks.org/wiki/C/Wska%C5%BAniki)  
   
 Every value of pointer type is one of the following:
   
@@ -220,12 +221,76 @@ S s = {1};
 int* sp = &s.n;      // pointer to the int that is a member of s
 ```
   
-- [array](https://en.cppreference.com/w/cpp/language/array)  
+### [__Array__](https://en.cppreference.com/w/cpp/language/array)
+  
 A declaration of the form T a[N];, declares a as an array object that consists of N contiguously allocated objects of type T. The elements of an array are numbered 0, …, N - 1, and may be accessed with the subscript operator [], as in a[0], …, a[N - 1].  
   
 Arrays can be constructed from any fundamental type (except `void`), pointers, pointers to members, classes, enumerations, or from other arrays of known bound (in which case the array is said to be multi-dimensional). In other words, only object types except for array types of unknown bound can be element types of array types. Array types of incomplete element type are also incomplete types.  
   
-- [enum](https://en.cppreference.com/w/cpp/language/enum)  
+### [__Enum__](https://en.cppreference.com/w/cpp/language/enum)  
+  
+An enumeration is a distinct type whose value is restricted to a range of values, which may include several explicitly named constants ("enumerators"). The values of the constants are values of an integral type known as the underlying type of the enumeration.  
+  
+__There are two distinct kinds of enumerations: unscoped enumeration (declared with the enum-key enum) and scoped enumeration (declared with the enum-key enum class or enum struct).__  
+  
+__Unscoped enumeration__  
+Each _enumerator_ becomes a named constant of the enumeration's type (that is, _name_), visible in the enclosing scope, and can be used whenever constants are required.  
+  
+```cpp
+enum Color { red, green, blue };
+Color r = red;
+switch(r) {
+  case red   : std::cout << "red\n";   break;
+  case green : std::cout << "green\n"; break;
+  case blue  : std::cout << "blue\n";  break;
+}
+```
+  
+Each enumerator is associated with a value of the underlying type. When initializers are provided in the enumerator-list, the values of enumerators are defined by those initializers. If the first enumerator does not have an initializer, the associated value is zero. For any other enumerator whose definition does not have an initializer, the associated value is the value of the previous enumerator plus one.  
+  
+```cpp
+enum Foo { a, b, c = 10, d, e = 1, f, g = f + c };
+// a = 0, b = 1, c = 10, d = 11, e = 1, f = 2, g = 12
+```
+  
+Values of unscoped enumeration type are implicitly-convertible to integral types. If the underlying type is not fixed, the value is convertible to the first type from the following list able to hold their entire value range: `int`, `unsigned int`, `long`, `unsigned long`, `long long`, or `unsigned long long`. If the underlying type is fixed, the values can be converted to their promoted underlying type.  
+  
+```cpp
+enum color { red, yellow, green = 20, blue };
+color col = red;
+int n = blue;    // n == 21
+```
+  
+When an unscoped enumeration is a class member, its enumerators may be accessed using class member access operators . and ->:
+  
+```cpp
+struct X
+{
+    enum direction { left = 'l', right = 'r' };
+};
+X x;
+X* p = &x;
+
+int a = X::direction::left; // allowed only in C++11 and later
+int b = X::left;
+int c = x.left;
+int d = p->left;
+```
+  
+[__Scoped enumerations__](https://en.cppreference.com/w/cpp/language/enum#Scoped_enumerations)  
+  
+```cpp
+enum class Color { red, green = 20, blue };
+Color r = Color::blue;
+switch(r) {
+  case Color::red   : std::cout << "red\n";   break;
+  case Color::green : std::cout << "green\n"; break;
+  case Color::blue  : std::cout << "blue\n";  break;
+}
+// int n = r;  // error; no scoped enum to int conversion
+int n = static_cast<int>(r);  // OK, n == 21
+```
+  
 - [klasa](https://en.cppreference.com/w/cpp/language/class)  
   
 ## __[sld.03]__ Types in C++, Type classification
