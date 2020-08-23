@@ -96,7 +96,7 @@ int maxValue;          // Niezalecane! maxValue zawiera śmieciowe bity aż nie 
   
 <https://en.cppreference.com/w/cpp/language/type>  
   
-- [referencja](https://en.cppreference.com/w/cpp/language/reference)  
+- [__referencja__](https://en.cppreference.com/w/cpp/language/reference)  
   
 ```cpp
 int& a[3];  // error
@@ -172,7 +172,54 @@ std::cout << r;       // undefined behavior: reads from a dangling reference
 std::string s = f();  // undefined behavior: copy-initializes from a dangling reference
 ```
   
-- [wskaźnik](https://en.cppreference.com/w/cpp/language/pointer)  
+- __wskaźnik__  
+  - [link 1 \(ang)](https://en.cppreference.com/w/cpp/language/pointer)  
+  - [link 2 \(pl)](https://pl.wikibooks.org/wiki/C/Wska%C5%BAniki)  
+  
+Every value of pointer type is one of the following:
+  
+- a _pointer to an object or function_ (in which case the pointer is said to _point_ to the object or function), or  
+- a _pointer past the end of an object_, or  
+- the _null pointer value_ for that type, or  
+- an _invalid pointer value_.  
+  
+A pointer that points to an object _represents the address_ of the first byte in memory occupied by the object. A pointer past the end of an object _represents the address_ of the first byte in memory after the end of the storage occupied by the object.  
+  
+Note that two pointers that represent the same address may nonetheless have different values.  
+  
+```cpp
+struct C {
+  int x, y;
+} c;
+
+int* px = &c.x;    // value of px is "pointer to c.x"
+int* pxe = px + 1; // value of pxe is "pointer past the end of c.x"
+int* py = &c.y;    // value of py is "pointer to c.y"
+
+assert(pxe == py); // == tests if two pointers represent the same
+                   // address may or may not fire
+
+*pxe = 1; // undefined behavior even if the assertion does not fire
+```
+  
+Indirection through an invalid pointer value and passing an invalid pointer value to a deallocation function have undefined behavior. Any other use of an invalid pointer value has implementation-defined behavior.  
+  
+__Pointers to objects__
+A pointer to object can be initialized with the return value of the address-of operator applied to any expression of object type, including another pointer type:  
+  
+```cpp
+int n;
+int* np = &n;           // pointer to int
+int* conts* npp = &np;  // non-const pointer to const pointer to non-const int
+
+int a[2];
+int (*ap)[2] = &a;   // pointer to array of int
+
+struct S { int n; };
+S s = {1};
+int* sp = &s.n;      // pointer to the int that is a member of s
+```
+
 - [array](https://en.cppreference.com/w/cpp/language/array)
 - [enum](https://en.cppreference.com/w/cpp/language/enum)  
 - [klasa](https://en.cppreference.com/w/cpp/language/class)  
