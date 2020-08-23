@@ -96,9 +96,82 @@ int maxValue;          // Niezalecane! maxValue zawiera śmieciowe bity aż nie 
   
 <https://en.cppreference.com/w/cpp/language/type>  
   
-DOCZYTAĆ!
-  
 - [referencja](https://en.cppreference.com/w/cpp/language/reference)  
+  
+```cpp
+int& a[3];  // error
+int&* p;    // error
+int& &r;    // error
+```
+  
+__Lvalue references__
+Lvalue references can be used to alias an existing object (optionally with different cv-qualification):
+
+```cpp
+#include <iostream>
+#include <string>
+ 
+int main() {
+    std::string s = "Ex";
+    std::string& r1 = s;
+    const std::string& r2 = s;
+
+    r1 += "ample";           // modifies s
+//  r2 += "!";               // error: cannot modify through reference to const
+    std::cout << r2 << '\n'; // prints s, which now holds "Example"
+}
+```
+  
+They can also be used to implement pass-by-reference semantics in function calls:
+  
+```cpp
+#include <iostream>
+#include <string>
+
+void double_string(std::string& s) {
+    s += s; // 's' is the same object as main()'s 'str'
+}
+
+int main() {
+    std::string str = "Test";
+    double_string(str);
+    std::cout << str << '\n';
+}
+```
+  
+When a function's return type is lvalue reference, the function call expression becomes an lvalue expression:
+  
+```cpp
+#include <iostream>
+#include <string>
+
+char& char_number(std::string& s, std::size_t n) {
+    return s.at(n); // string::at() returns a reference to char
+}
+
+int main() {
+    std::string str = "Test";
+    char_number(str, 1) = 'a'; // the function call is lvalue, can be assigned to
+    std::cout << str << '\n';
+}
+```
+  
+__Dangling references__  
+Although references, once initialized, always refer to valid objects or functions, it is possible to create a program where the lifetime of the referred-to object ends, but the reference remains accessible (dangling). Accessing such a reference is undefined behavior. A common example is a function returning a reference to an automatic variable:  
+  
+```cpp
+std::string& f()
+{
+    std::string s = "Example";
+    return s; // exits the scope of s:
+              // its destructor is called and its storage deallocated
+}
+  
+std::string& r = f(); // dangling reference
+std::cout << r;       // undefined behavior: reads from a dangling reference
+std::string s = f();  // undefined behavior: copy-initializes from a dangling reference
+```
+  
 - [wskaźnik](https://en.cppreference.com/w/cpp/language/pointer)  
 - [array](https://en.cppreference.com/w/cpp/language/array)
 - [enum](https://en.cppreference.com/w/cpp/language/enum)  
