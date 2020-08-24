@@ -573,3 +573,31 @@ The difference is subtle but very important.
   
 [my playin' implementations around](../playdo/08/functions.cpp)  
   
+## __[sld.09]__ Functions and Macros, Macros
+  
+Directives for preprocesor (before compilation)  
+  
+Examples:  
+__#define__ start replacing  
+__#undef__ stop replacing  
+  
+```cpp
+#include <iostream>
+
+#define SQUARE(x) x*x
+
+int main() 
+{
+    int x = 5;
+    std::cout << SQUARE(x);
+
+#undef SQUARE(x)
+
+    std::cout << SQUARE(x);
+    // SQUARE was not declared!
+
+}
+```
+
+[my playin' implementations around](../playdo/09/macros.cpp)  
+  
