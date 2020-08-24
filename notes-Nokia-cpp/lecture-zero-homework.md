@@ -213,7 +213,7 @@ Note: const variables are considered non-modifiable l-values.
 ### References must be initialized  
   
 References must be initialized when created:
-
+  
 ```cpp
 int value{ 5 };
 int &ref{ value }; // valid reference, initialized to variable value
@@ -250,7 +250,7 @@ ref = value2; // assigns 6 (the value of value2) to value1 -- does NOT change th
   
 Note that the second statement may not do what you might expect! Instead of changing ref to reference variable value2, it assigns the value of value2 to value1.  
   
-### [Lvalue references](https://en.cppreference.com/w/cpp/language/reference)    
+### [Lvalue references](https://en.cppreference.com/w/cpp/language/reference)  
   
 Lvalue references can be used to alias an existing object (optionally with different cv-qualification):
   
@@ -568,3 +568,8 @@ The line `p = pointerToB` changes the value of `p`, i.e. it now points to a diff
 The difference is subtle but very important.  
   
 [my playin' around snipets above](../playdo/05/pointers_and_refrs.cpp)  
+  
+## __[sld.08]__ Functions and Macros, Functions  
+  
+[my playin' implementations around](../playdo/08/functions.cpp)  
+  
