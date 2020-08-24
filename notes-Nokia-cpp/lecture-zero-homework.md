@@ -104,9 +104,156 @@ int&* p;    // error
 int& &r;    // error
 ```
   
-__Lvalue references__
-Lvalue references can be used to alias an existing object (optionally with different cv-qualification):
+[learncpp.com about references](https://www.learncpp.com/cpp-tutorial/611-references/)  
+C++ supports three kinds of references:
+  
+- References to non-const values (typically just called “references”, or “non-const references”), which we’ll discuss in this lesson.  
+- References to const values (often called “const references”), which we’ll discuss in the next lesson.  
+- C++11 added r-value references, which we cover in detail in the chapter on move semantics.  
+  
+### References to non-const values  
+  
+A reference (to a non-const value) is declared by using an ampersand (&) between the reference type and the variable name:
+  
+```cpp
+int value{ 5 }; // normal integer
+int &ref{ value }; // reference to variable value
+```
+  
+In this context, the ampersand does not mean “address of”, it means “reference to”.  
+References to non-const values are often just called “references” for short.  
+Just like the position of the asterisk of pointers, it doesn’t matter if you place the ampersand at the type or at the variable name.
+  
+```cpp
+int value{ 5 };
+// These two do the same.
+int& ref1{ value };
+int &ref2{ value };
+```
+  
+### References as aliases  
+  
+References generally act identically to the values they’re referencing. In this sense, a reference acts as an alias for the object being referenced. For example:
+  
+```cpp
+int x{ 5 }; // normal integer
+int &y{ x }; // y is a reference to x
+int &z{ y }; // z is also a reference to x
+```
+  
+In the above snippet, setting or getting the value of x, y, or z will all do the same thing (set or get the value of x).
+Let’s take a look at references in use:
+  
+```cpp
+#include <iostream>
 
+int main() {
+  int value{ 5 }; // normal integer
+  int &ref{ value }; // reference to variable value
+  value = 6; // value is now 6
+  ref = 7; // value is now 7
+  std::cout << value << '\n'; // prints 7
+  ++ref;
+  std::cout << value << '\n'; // prints 8
+  return 0;
+}
+```
+  
+This code prints:  
+7  
+8  
+  
+In the above example, ref and value are treated synonymously.  
+Using the address-of operator on a reference returns the address of the value being referenced:
+  
+```cpp
+cout << &value; // prints 0012FF7C
+cout << &ref; // prints 0012FF7C
+```
+  
+Just as you would expect if ref is acting as an alias for the value.
+  
+### l-values and r-values  
+  
+In C++, variables are a type of l-value (pronounced ell-value). An l-value is a value that has an address (in memory). Since all variables have addresses, all variables are l-values. The name l-value came about because l-values are the only values that can be on the left side of an assignment statement. When we do an assignment, the left hand side of the assignment operator must be an l-value. Consequently, a statement like 5 = 6; will cause a compile error, because 5 is not an l-value. The value of 5 has no memory, and thus nothing can be assigned to it. 5 means 5, and its value can not be reassigned. When an l-value has a value assigned to it, the current value at that memory address is overwritten.  
+  
+The opposite of l-values are r-values (pronounced arr-values). An r-value is an expression that is not an l-value. Examples of r-values are literals (such as 5, which evaluates to 5) and non-l-value expressions (such as 2 + x).  
+  
+Here is an example of some assignment statements, showing how the r-values evaluate:
+  
+```cpp
+int y;      // define y as an integer variable
+y = 4;      // 4 evaluates to 4, which is then assigned to y
+y = 2 + 5;  // 2 + 5 evaluates to 7, which is then assigned to y
+
+int x;      // define x as an integer variable
+x = y;      // y evaluates to 7 (from before), which is then assigned to x.
+x = x;      // x evaluates to 7, which is then assigned to x (useless!)
+x = x + 1;  // x + 1 evaluates to 8, which is then assigned to x.
+```
+  
+Let’s take a closer look at the last assignment statement above, since it causes the most confusion.  
+
+```cpp
+x = x + 1;
+```
+  
+In this statement, the variable `x` is being used in two different contexts. On the left side of the assignment operator, “x” is being used as an l-value (variable with an address). On the right side of the assignment operator, x is being used as an r-value, and will be evaluated to produce a value (in this case, 7). When C++ evaluates the above statement, it evaluates as:  
+  
+```cpp
+x = 7 + 1;
+```
+  
+Which makes it obvious that C++ will assign the value 8 back into variable x.  
+  
+The key takeaway is that on the left side of the assignment, you must have something that represents a memory address (such as a variable). Everything on the right side of the assignment will be evaluated to produce a value.  
+  
+Note: const variables are considered non-modifiable l-values.  
+  
+### References must be initialized  
+  
+References must be initialized when created:
+
+```cpp
+int value{ 5 };
+int &ref{ value }; // valid reference, initialized to variable value
+
+int &invalidRef; // invalid, needs to reference something
+```
+  
+Unlike pointers, which can hold a null value, there is no such thing as a null reference.  
+References to non-const values can only be initialized with non-const l-values. They can not be initialized with const l-values or r-values.  
+  
+```cpp
+int x{ 5 };
+int &ref1{ x }; // okay, x is an non-const l-value
+
+const int y{ 7 };
+int &ref2{ y }; // not okay, y is a const l-value
+
+int &ref3{ 6 }; // not okay, 6 is an r-value
+```
+  
+Note that in the middle case, you can’t initialize a non-const reference with a const object -- otherwise you’d be able to change the value of the const object through the reference, which would violate the const-ness of the object.  
+  
+### References can not be reassigned  
+  
+Once initialized, a reference can not be changed to reference another variable. Consider the following snippet:  
+  
+```cpp
+int value1{ 5 };
+int value2{ 6 };
+
+int &ref{ value1 }; // okay, ref is now an alias for value1
+ref = value2; // assigns 6 (the value of value2) to value1 -- does NOT change the reference!
+```
+  
+Note that the second statement may not do what you might expect! Instead of changing ref to reference variable value2, it assigns the value of value2 to value1.  
+  
+### [Lvalue references](https://en.cppreference.com/w/cpp/language/reference)    
+  
+Lvalue references can be used to alias an existing object (optionally with different cv-qualification):
+  
 ```cpp
 #include <iostream>
 #include <string>
@@ -156,7 +303,8 @@ int main() {
 }
 ```
   
-__Dangling references__  
+### Dangling references  
+  
 Although references, once initialized, always refer to valid objects or functions, it is possible to create a program where the lifetime of the referred-to object ends, but the reference remains accessible (dangling). Accessing such a reference is undefined behavior. A common example is a function returning a reference to an automatic variable:  
   
 ```cpp
