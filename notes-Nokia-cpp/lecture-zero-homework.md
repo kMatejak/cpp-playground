@@ -506,7 +506,7 @@ class Derived : public Base {
 ```
   
 \[...]  
-Aaaand so go on, to __nine__, but I don't know why... 
+Aaaand so go on, to __nine__, but I don't know why...  
   
 ## __[sld.04]__ Types in C++, Initialization and `auto` keyword  
 
@@ -586,7 +586,7 @@ __#undef__ stop replacing
 
 #define SQUARE(x) x*x
 
-int main() 
+int main()
 {
     int x = 5;
     std::cout << SQUARE(x);
@@ -595,10 +595,9 @@ int main()
 
     std::cout << SQUARE(x);
     // SQUARE was not declared!
-
 }
 ```
-
+  
 [my playin' implementations around](../playdo/09/macros.cpp)  
   
 ## __[sld.11]__ Functions and Macros, Default parameters and overloading  
@@ -638,3 +637,58 @@ int main()
     print("ten");
 }
 ```
+  
+[my playin' implementations around](../playdo/11/overloading.cpp)  
+  
+## __[sld.13]__ Operators C++, Operators overloading  
+  
+```cpp
+ostream& operator<<(ostream& os, const Data& dt)
+{
+  os << dt.field; << '/' << dt.field2 << '/' << dt.field3;
+  return os;
+}
+```
+  
+__`::   .*   .   ?:`__ cannot be overloaded!  
+  
+## __[sld.14]__ Memory management, Memory architecture  
+  
+- __Code segment__  
+Compiled program  
+- __Data segment__  
+Global and static variables  
+- __Stack__  
+Pre-allocated memory  
+- __Heap__  
+Dynamic allocated memory  
+  
+```cpp
+int *number = new int;
+int *table = new int[10];
+
+delete number;
+delete[] table;
+```
+  
+## __[sld.15]__ Memory management, Dangling pointer  
+  
+```cpp
+int* process()
+{
+    int x = 5;
+    return &x;
+}
+
+int main()
+{
+    int *p = process();
+    std::cout << *p;
+}
+```
+  
+A pointer pointing to a memory location of already deleted object is known as dangling pointer.  
+runtime error: `[1]    18733 segmentation fault (core dumped)`  
+  
+[my playin' implementations around](../playdo/15/dangling_pointer.cpp)  
+  
