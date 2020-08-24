@@ -692,3 +692,28 @@ runtime error: `[1]    18733 segmentation fault (core dumped)`
   
 [my playin' implementations around](../playdo/15/dangling_pointer.cpp)  
   
+## __[sld.16]__ Structures and classes, Content
+  
+- Members (data)
+- Methods (behaviour)
+- Special members (constructors, destructors, assigments)
+- Static members (one for all instances)
+- Static methods (one for all instances)
+  
+```cpp
+class MyClass
+{
+  private:
+    int m_data;
+    std::string m_data2;
+  public:
+    MyClass() = default;
+    void showData();
+};
+
+void MyClass::showData()
+{
+  std::cout << m_data;
+}
+```
+  
