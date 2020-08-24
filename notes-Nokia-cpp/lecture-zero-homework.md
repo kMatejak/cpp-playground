@@ -601,3 +601,40 @@ int main()
 
 [my playin' implementations around](../playdo/09/macros.cpp)  
   
+## __[sld.11]__ Functions and Macros, Default parameters and overloading  
+  
+```cpp
+void point (int x, int y = 4)
+{
+  std::cout << x << y;
+}
+
+point(3);     //  34
+point(5,6);  //  56
+```
+  
+```cpp
+void print(int i)
+{
+    std::cout << " hi int: ";
+    std::cout << i;
+    std::cout << std::endl;
+}
+void print(double f)
+{
+    std::cout << " hi float: ";
+    std::cout << f;
+    std::cout << std::endl;
+}
+void print(std::string c)
+{
+    std::cout << " hi text: " << c;
+    std::cout << std::endl;
+}
+int main()
+{
+    print(10);
+    print(10.10);
+    print("ten");
+}
+```
